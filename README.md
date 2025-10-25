@@ -33,7 +33,7 @@ Solution Structure
 | `PokerGame.Api`     | ASP.NET Core Web API                         |
 | ├─ `Controllers`    | API endpoints (`PokerController`)            |
 | ├─ `Models`         | Request/Response DTOs                        |
-| ├─ `Mappers`        | DTO ↔ Domain conversion                      |
+| ├─ `Mappers`        | DTO to Domain conversion                      |
 | `PokerGame.Tests`   | Unit + BDD test coverage                     |
 | ├─ `UnitTests`      | Component-level tests                        |
 | ├─ `Features`       | Gherkin scenarios (`PokerHands.feature`)     |
