@@ -10,7 +10,6 @@ builder.Services.AddScoped<IHandEvaluator, HandEvaluator>();
 builder.Services.AddScoped<IHandValidator, HandValidator>();
 builder.Services.AddScoped<IPokerGameEngine, PokerGameEngine>();
 
-builder.Services.AddScoped<PokerGameEngine>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

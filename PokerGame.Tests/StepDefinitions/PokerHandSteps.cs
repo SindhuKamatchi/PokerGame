@@ -16,7 +16,7 @@ namespace PokerGame.Tests.StepDefinitions
     {
         private readonly List<Hand> _hands = new();
         private readonly PokerGameEngine _engine;
-        private Dictionary<Hand, HandScore> _scores = new();
+        private Dictionary<int, HandScore> _scores = new();
         private Hand _winner;
 
         public PokerHandSteps()
@@ -59,14 +59,14 @@ namespace PokerGame.Tests.StepDefinitions
         [Then(@"HandNo (\d+) should have a ""(.*)""")]
         public void ThenHandShouldHave(int handNo, string expectedDescription)
         {
-            var actual = _scores[_hands.First(h => h.HandNo == handNo)].Description;
+            var actual = _scores[handNo].Description;
             actual.Should().Be(expectedDescription);
         }
 
         [Then(@"The result of the game should be ""(.*)""")]
         public void ThenTheResultShouldBe(string expectedResult)
         {
-            var score = _scores[_winner];
+            var score = _scores[_winner.HandNo];
             var actual = $"Winning Hand: {_winner.HandNo} with {score.Description}";
             actual.Should().Be(expectedResult);
         }

@@ -2,16 +2,19 @@
 
 namespace PokerGame.Infrastructure.Comparers
 {
-    public class HandComparer : IComparer<Hand>
+    public class HandComparer : IComparer<int>
     {
-        private readonly Dictionary<Hand, HandScore> _scores;
+        private readonly Dictionary<int, HandScore> _scores;
+        private readonly Dictionary<int, Hand> _handMap;
 
-        public HandComparer(Dictionary<Hand, HandScore> scores) => _scores = scores;
-
-        public int Compare(Hand? x, Hand? y)
+        public HandComparer(Dictionary<int, HandScore> scores, Dictionary<int, Hand> handMap)
         {
-            if (x == null || y == null) return 0;
+            _scores = scores;
+            _handMap = handMap;
+        }
 
+        public int Compare(int x, int y)
+        {
             var scoreX = _scores[x];
             var scoreY = _scores[y];
 
@@ -21,8 +24,8 @@ namespace PokerGame.Infrastructure.Comparers
             int highCardCompare = scoreY.HighCard.CompareTo(scoreX.HighCard);
             if (highCardCompare != 0) return highCardCompare;
 
-            var kickersX = x.Cards.Select(c => c.Value).OrderByDescending(v => v).ToList();
-            var kickersY = y.Cards.Select(c => c.Value).OrderByDescending(v => v).ToList();
+            var kickersX = _handMap[x].Cards.Select(c => c.Value).OrderByDescending(v => v).ToList();
+            var kickersY = _handMap[y].Cards.Select(c => c.Value).OrderByDescending(v => v).ToList();
 
             for (int i = 0; i < kickersX.Count; i++)
             {

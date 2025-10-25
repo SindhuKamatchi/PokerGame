@@ -2,6 +2,7 @@
 using PokerGame.Application.Interfaces;
 using PokerGame.Domain;
 using PokerGame.Infrastructure.Comparers;
+using System.Linq;
 
 namespace PokerGame.Application
 {
@@ -18,7 +19,7 @@ namespace PokerGame.Application
             _logger = logger;
         }
 
-        public Dictionary<Hand, HandScore> ScoreHands(List<Hand> hands)
+        public Dictionary<int, HandScore> ScoreHands(List<Hand> hands)
         {
             if (hands == null || hands.Count == 0)
             {
@@ -39,19 +40,21 @@ namespace PokerGame.Application
                 }
             }
 
-            return hands.ToDictionary(h => h, h => _evaluator.Evaluate(h));
+            return hands.ToDictionary(h => h.HandNo, h => _evaluator.Evaluate(h));
         }
 
         public Hand DetermineWinner(List<Hand> hands)
         {
+            var handMap = hands.ToDictionary(h => h.HandNo);
             var scores = ScoreHands(hands);
-
-            var sortedHands = scores.Keys
-                .OrderBy(h => h, new HandComparer(scores))
+            var sortedHandNos = scores.Keys
+                .OrderBy(handNo => handNo, new HandComparer(scores, handMap))
                 .ToList();
 
-            var winningHand = sortedHands.First();
-            var winningScore = scores[winningHand];
+
+            var winningHandNo = sortedHandNos.First();
+            var winningHand = handMap[winningHandNo];
+            var winningScore = scores[winningHandNo];
 
             _logger.LogInformation(
                 "Winning HandNo: {HandNo} | Rank: {Rank} | HighCard: {HighCard}",

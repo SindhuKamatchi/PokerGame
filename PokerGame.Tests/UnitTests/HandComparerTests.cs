@@ -27,14 +27,20 @@ namespace PokerGame.Tests.UnitTests
             var hand1 = CreateHand(1, hand1Values);
             var hand2 = CreateHand(2, hand2Values);
 
-            var scores = new Dictionary<Hand, HandScore>
+            var scores = new Dictionary<int, HandScore>
             {
-                [hand1] = new HandScore(rank1, highCard1),
-                [hand2] = new HandScore(rank2, highCard2)
+                [hand1.HandNo] = new HandScore(rank1, highCard1),
+                [hand2.HandNo] = new HandScore(rank2, highCard2)
             };
 
-            var comparer = new HandComparer(scores);
-            var result = comparer.Compare(hand1, hand2);
+            var handMap = new Dictionary<int, Hand>
+            {
+                [hand1.HandNo] = hand1,
+                [hand2.HandNo] = hand2
+            };
+
+            var comparer = new HandComparer(scores, handMap);
+            var result = comparer.Compare(hand1.HandNo, hand2.HandNo);
 
             Assert.Equal(expected, result);
         }

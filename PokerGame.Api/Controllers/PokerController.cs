@@ -35,10 +35,10 @@ namespace PokerGame.Api.Controllers
                 var hands = handDtos.Select(HandMapper.ToDomain).ToList();
                 var scores = _engine.ScoreHands(hands);
 
-                var result = scores.Select(kvp => new HandScoreResponse
+                var result = hands.Select(h => new HandScoreResponse
                 {
-                    HandNo = kvp.Key.HandNo,
-                    Score = kvp.Value.Description
+                    HandNo = h.HandNo,
+                    Score = scores[h.HandNo].Description
                 }).ToList();
 
                 _logger.LogInformation("Scored {Count} hands successfully.", hands.Count);
@@ -66,7 +66,7 @@ namespace PokerGame.Api.Controllers
             {
                 var hands = handDtos.Select(HandMapper.ToDomain).ToList();
                 var winner = _engine.DetermineWinner(hands);
-                var score = _engine.ScoreHands(hands)[winner];
+                var score = _engine.ScoreHands(hands)[winner.HandNo];
 
                 _logger.LogInformation("Winner determined: HandNo {HandNo} with {Score}.", winner.HandNo, score.Description);
                 return Ok(new WinnerResponse
