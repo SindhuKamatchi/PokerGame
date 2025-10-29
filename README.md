@@ -125,7 +125,7 @@ Includes:
 Getting Started
 ------------------
 1. Clone the repo:
-   git clone https://github.com/your-username/PokerGame.git
+   git clone https://github.com/SindhuKamatchi/PokerGame.git
 
 2. Open PokerGame.sln in Visual Studio
 
